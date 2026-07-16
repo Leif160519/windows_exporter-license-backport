@@ -212,9 +212,15 @@ Under [MIT](LICENSE)
 
 [web_config]: https://github.com/prometheus/exporter-toolkit/blob/master/docs/web-configuration.md
 
-## 补充
+## 说明
+- 此项目旨在将license检测功能，下放到0.25版本中，首次是在0.26上出现的，但是0.26不支持windows 7和server 2008版本
 - go版本要求: 不低于1.21.1(1.21.5之前)
 - 构建命令
 ```
 go build -o windows_exporter-license-0.25.0-amd64.exe
 ```
+
+## 参考
+- [license collector][#1524]
+
+[#1524]: https://github.com/prometheus-community/windows_exporter/commit/fa8d28c181ccc0065ab9753d502ea1f4e1e4c1ab
