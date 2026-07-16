@@ -217,7 +217,7 @@ Under [MIT](LICENSE)
 - go版本要求: 不低于1.21.1(1.21.5之前)
 - 构建命令
 ```
-go build -o windows_exporter-license-0.25.0-amd64.exe
+go build -o windows_exporter-license-0.25.0-amd64.exe -buildvcs=false
 ```
 
 ## 参考
