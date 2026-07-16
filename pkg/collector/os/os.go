@@ -198,13 +198,29 @@ func (c *collector) collect(ctx *types.ScrapeContext, ch chan<- prometheus.Metri
 	timezoneName, _ := currentTime.Zone()
 
 	// Get total allocation of paging files across all disks.
-	memManKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management`, registry.QUERY_VALUE)
-	defer memManKey.Close()
+	//memManKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management`, registry.QUERY_VALUE)
+	//defer memManKey.Close()
 
-	if err != nil {
-		return nil, err
-	}
-	pagingFiles, _, pagingErr := memManKey.GetStringsValue("ExistingPageFiles")
+	//if err != nil {
+	//	return nil, err
+	//}
+	//pagingFiles, _, pagingErr := memManKey.GetStringsValue("ExistingPageFiles")
+
+    // 20260716 by Fisher.Luo 修复
+    // Begin
+    var pagingFiles []string
+    var pagingErr error
+    
+    memManKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management`, registry.QUERY_VALUE)
+    if err != nil {
+        _ = level.Warn(c.logger).Log("msg", "Failed to open Memory Management registry key, paging metrics will be omitted", "err", err)
+        // 不返回错误，跳过 paging 相关指标
+        pagingErr = fmt.Errorf("registry key not available")
+    } else {
+        defer memManKey.Close()
+        pagingFiles, _, pagingErr = memManKey.GetStringsValue("ExistingPageFiles")
+    }
+    // End
 	// Get build number and product name from registry
 	ntKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
 	defer ntKey.Close()
@@ -223,10 +239,19 @@ func (c *collector) collect(ctx *types.ScrapeContext, ch chan<- prometheus.Metri
 		return nil, err
 	}
 
-	revision, _, err := ntKey.GetIntegerValue("UBR")
-	if err != nil {
-		return nil, err
-	}
+	//revision, _, err := ntKey.GetIntegerValue("UBR")
+	//if err != nil {
+	//	return nil, err
+	//}
+
+    // 20260716 by Fisher.luo 修改
+    // Begin
+    revision, _, err := ntKey.GetIntegerValue("UBR")
+    if err != nil {
+        _ = level.Warn(c.logger).Log("msg", "Failed to get UBR (revision), using 0", "err", err)
+        revision = 0 // 使用默认值，不影响其他指标
+    }
+    // End
 
 	var fsipf float64
 	for _, pagingFile := range pagingFiles {
