@@ -1,6 +1,6 @@
 module github.com/prometheus-community/windows_exporter
 
-go 1.21
+go 1.22.0
 
 require (
 	github.com/Microsoft/hcsshim v0.11.4
@@ -9,7 +9,7 @@ require (
 	github.com/go-kit/log v0.2.1
 	github.com/go-ole/go-ole v1.3.0
 	github.com/prometheus/client_golang v1.18.0
-	github.com/prometheus/client_model v0.5.0
+	github.com/prometheus/client_model v0.6.2
 	github.com/prometheus/common v0.45.0
 	github.com/prometheus/exporter-toolkit v0.11.0
 	github.com/sirupsen/logrus v1.9.3 // indirect
@@ -51,6 +51,6 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/grpc v1.56.3 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
