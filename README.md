@@ -214,10 +214,13 @@ Under [MIT](LICENSE)
 
 ## 说明
 - 此项目旨在将license检测功能，下放到0.25版本中，首次是在0.26上出现的，但是0.26不支持windows 7和server 2008版本
-- go版本要求: 不低于1.21.1(1.21.5之前)
+- go版本要求: 不低于1.21.1(1.21.5之前),各版本下载地址:[All release](https://golang.google.cn/dl/)
 - 构建命令
 ```
+# 64位
 go build -o windows_exporter-license-0.25.0-amd64.exe -buildvcs=false
+# 32位
+GOARCH=386 go build -o windows_exporter-license-0.25.0-386.exe -buildvcs=false
 ```
 
 ## 参考
